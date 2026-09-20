@@ -64,6 +64,27 @@ class SentenceChunker:
         return chunks
 
 
+class HeadingChunker:
+    """
+    Split markdown text by headings (# Heading 1, ## Heading 2, ### Heading 3, etc.)
+    and numbered section markers.
+    Preserves heading in each chunk to maintain context.
+    """
+
+    def __init__(self) -> None:
+        pass
+
+    def chunk(self, text: str) -> list[str]:
+        if not text or not text.strip():
+            return []
+
+        # Split on markdown headings (#, ##, ###) or numbered sections (e.g., 1. Điều kiện...)
+        pattern = r'(?m)(?=^(?:#{1,6}\s+|(?:\d+\.)+\s+|(?:\d+\.)\s+[A-ZÀ-ỸĐ]|(?:Điều|Mục|Phần)\s+\d+))'
+        raw_chunks = re.split(pattern, text)
+        chunks = [c.strip() for c in raw_chunks if c and c.strip()]
+        return chunks if chunks else [text]
+
+
 class RecursiveChunker:
     """
     Recursively split text using separators in priority order.

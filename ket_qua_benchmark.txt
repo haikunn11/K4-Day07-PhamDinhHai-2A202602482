@@ -1,0 +1,88 @@
+======================================================================
+KẾT QUẢ BENCHMARK RETRIEVAL VỚI GEMINI EMBEDDER & FIXEDSIZECHUNKER(500, 50)
+Backend: Gemini (text-embedding-004 / 3072 dims) | Tổng chunks: 93
+======================================================================
+
+Câu hỏi 1: Người mua có thể gửi yêu cầu Trả hàng/Hoàn tiền cho đơn hàng thông thường trong bao lâu?
+  - Gold Answer: Người mua có thể gửi yêu cầu Trả hàng/Hoàn tiền trong vòng 15 ngày kể từ khi đơn hàng được cập nhật trạng thái “Giao hàng thành công”
+  - Chuỗi đặc trưng cần có: '15 ngày'
+  - Top-1 Chunk: ID=return-refund-policy#6 | Score=0.7952
+    Nội dung preview: ả hàng (tuy nhiên Shopee sẽ cần Người Bán xác nhận lại những thỏa thuận này).  Sản Phẩm ở trạng thái nguyên vẹn và nguyê...
+  - Top-3 IDs: ['return-refund-policy#6', 'return-refund-general#0', 'return-refund-general#1']
+  - Mức 1 (Doc ID đúng?): ĐÚNG
+  - Mức 2 (Ngữ cảnh chứa đáp án?): CÓ
+  - Đánh giá điểm: 1/2 (Đạt - Đáp án nằm ở Top-2 hoặc Top-3) (1/2 điểm)
+  - Câu trả lời của Agent: [RAG Answer] ả hàng (tuy nhiên Shopee sẽ cần Người Bán xác nhận lại những thỏa thuận này).  Sản Phẩm ở trạng thái nguyên vẹn và nguyên bao bì nhưng Ng...
+----------------------------------------------------------------------
+Câu hỏi 2: Thời hạn yêu cầu Trả hàng/Hoàn tiền đối với thực phẩm tươi sống và đông lạnh là bao lâu?
+  - Gold Answer: Người mua phải gửi yêu cầu trong vòng 24 giờ kể từ khi đơn hàng được cập nhật trạng thái “Giao hàng thành công”, trừ trường hợp khiếu nại với lý do chưa nhận được hàng.
+  - Chuỗi đặc trưng cần có: '24 giờ'
+  - Top-1 Chunk: ID=return-refund-policy#6 | Score=0.8287
+    Nội dung preview: ả hàng (tuy nhiên Shopee sẽ cần Người Bán xác nhận lại những thỏa thuận này).  Sản Phẩm ở trạng thái nguyên vẹn và nguyê...
+  - Top-3 IDs: ['return-refund-policy#6', 'return-refund-general#1', 'return-refund-general#0']
+  - Mức 1 (Doc ID đúng?): ĐÚNG
+  - Mức 2 (Ngữ cảnh chứa đáp án?): CÓ
+  - Đánh giá điểm: 2/2 (Xuất sắc - Đáp án nằm ở Top-1) (2/2 điểm)
+  - Câu trả lời của Agent: [RAG Answer] ả hàng (tuy nhiên Shopee sẽ cần Người Bán xác nhận lại những thỏa thuận này).  Sản Phẩm ở trạng thái nguyên vẹn và nguyên bao bì nhưng Ng...
+----------------------------------------------------------------------
+Câu hỏi 3: Với đơn hàng do Người bán tự vận chuyển, thời hạn yêu cầu Trả hàng/Hoàn tiền được tính như thế nào?
+  - Gold Answer: Người mua có thể gửi yêu cầu trong 15 ngày kể từ khi bấm “Đã nhận được hàng”, hoặc 20 ngày kể từ lúc đơn hàng được cập nhật “Lấy hàng thành công” nếu chưa bấm “Đã nhận được hàng”.
+  - Chuỗi đặc trưng cần có: '20 ngày'
+  - Top-1 Chunk: ID=return-refund-general#1 | Score=0.7718
+    Nội dung preview: o Shopee  Thời gian để Shopee tiếp nhận yêu cầu Trả hàng/Hoàn tiền từ bạn sẽ là:  Đối với đơn hàng giao thực phẩm tươi s...
+  - Top-3 IDs: ['return-refund-general#1', 'return-refund-seller#4', 'return-refund-policy#28']
+  - Mức 1 (Doc ID đúng?): ĐÚNG
+  - Mức 2 (Ngữ cảnh chứa đáp án?): CÓ
+  - Đánh giá điểm: 2/2 (Xuất sắc - Đáp án nằm ở Top-1) (2/2 điểm)
+  - Câu trả lời của Agent: [RAG Answer] o Shopee  Thời gian để Shopee tiếp nhận yêu cầu Trả hàng/Hoàn tiền từ bạn sẽ là:  Đối với đơn hàng giao thực phẩm tươi sống & đông lạnh (...
+----------------------------------------------------------------------
+Câu hỏi 4: Người mua cần cung cấp những thông tin hoặc bằng chứng gì khi gửi yêu cầu Trả hàng/Hoàn tiền?
+  - Gold Answer: Người mua cần chọn lý do khiếu nại, mô tả tình trạng sản phẩm và cung cấp hình ảnh hoặc video làm bằng chứng cho yêu cầu Trả hàng/Hoàn tiền.
+  - Chuỗi đặc trưng cần có: 'video'
+  - Top-1 Chunk: ID=return-refund-evidence#0 | Score=0.8599
+    Nội dung preview: # Trả hàng/Hoàn tiền - Hướng dẫn chuẩn bị bằng chứng khi yêu cầu Trả hàng/Hoàn tiền  Khi bạn cần gửi yêu cầu Trả hàng/Ho...
+  - Top-3 IDs: ['return-refund-evidence#0', 'return-refund-evidence#3', 'return-refund-policy#24']
+  - Mức 1 (Doc ID đúng?): ĐÚNG
+  - Mức 2 (Ngữ cảnh chứa đáp án?): CÓ
+  - Đánh giá điểm: 1/2 (Đạt - Đáp án nằm ở Top-2 hoặc Top-3) (1/2 điểm)
+  - Câu trả lời của Agent: [RAG Answer] # Trả hàng/Hoàn tiền - Hướng dẫn chuẩn bị bằng chứng khi yêu cầu Trả hàng/Hoàn tiền  Khi bạn cần gửi yêu cầu Trả hàng/Hoàn tiền trên Shop...
+----------------------------------------------------------------------
+Câu hỏi 5: Sau khi nhận thông báo liên quan đến yêu cầu Trả hàng/Hoàn tiền, Người bán phải phản hồi trong bao lâu?
+  - Metadata Filter: {'audience': 'seller'}
+  - Gold Answer: Người bán cần gửi phản hồi trong vòng 02 ngày lịch kể từ ngày nhận được thông báo của Shopee trong các trường hợp được quy định.
+  - Chuỗi đặc trưng cần có: '02 ngày lịch'
+  - Top-1 Chunk: ID=return-refund-seller#1 | Score=0.8253
+    Nội dung preview: hoại.  Người Bán cần gửi phản hồi trong vòng 02 ngày lịch (hoặc thời hạn khác được quy định bởi Shopee trong từng thời đ...
+  - Top-3 IDs: ['return-refund-seller#1', 'return-refund-seller#0', 'return-refund-seller#4']
+  - Mức 1 (Doc ID đúng?): ĐÚNG
+  - Mức 2 (Ngữ cảnh chứa đáp án?): CÓ
+  - Đánh giá điểm: 2/2 (Xuất sắc - Đáp án nằm ở Top-1) (2/2 điểm)
+  - Câu trả lời của Agent: [RAG Answer]  Người Bán trên Ứng Dụng Shopee và/hoặc thư điện tử và/hoặc tin nhắn điện thoại. Người Bán cần gửi phản hồi trong vòng 02 ngày lịch (hoặc...
+----------------------------------------------------------------------
+
+=> TỔNG ĐIỂM CHẤT LƯỢNG TRUY XUẤT: 8 / 10 điểm
+
+======================================================================
+THÍ NGHIỆM A/B BẮT BUỘC TRÊN CÂU HỎI 5 (METADATA FILTERING)
+Query: 'Sau khi nhận thông báo liên quan đến yêu cầu Trả hàng/Hoàn tiền, Người bán phải phản hồi trong bao lâu?'
+======================================================================
+
+[LẦN A: CÓ FILTER (audience='seller')]
+  Top-1: ID=return-refund-seller#1 | Score=0.8253 | Chứa đáp án? CÓ
+          Preview: hoại.  Người Bán cần gửi phản hồi trong vòng 02 ngày lịch (hoặc thời hạn khác được quy định bởi Shopee trong t...
+  Top-2: ID=return-refund-seller#0 | Score=0.8192 | Chứa đáp án? KHÔNG
+          Preview: # Chính sách Trả hàng và Hoàn tiền - Quyền và Trách nhiệm của Người Bán  ## 1. QUYỀN CỦA NGƯỜI BÁN  Khi nhận đ...
+  Top-3: ID=return-refund-seller#4 | Score=0.7677 | Chứa đáp án? CÓ
+          Preview: rả hàng/hoàn tiền một phần (Người Mua chỉ nhấn yêu cầu trả hàng/hoàn tiền cho một hoặc một số sản phẩm trong đ...
+
+[LẦN B: KHÔNG CÓ FILTER]
+  Top-1: ID=return-refund-policy#22 | Score=0.8290 | Chứa đáp án? CÓ
+          Preview:  Người Bán trên Ứng Dụng Shopee và/hoặc thư điện tử và/hoặc tin nhắn điện thoại. Người Bán cần gửi phản hồi tr...
+  Top-2: ID=return-refund-seller#1 | Score=0.8253 | Chứa đáp án? CÓ
+          Preview: hoại.  Người Bán cần gửi phản hồi trong vòng 02 ngày lịch (hoặc thời hạn khác được quy định bởi Shopee trong t...
+  Top-3: ID=return-refund-seller#0 | Score=0.8192 | Chứa đáp án? KHÔNG
+          Preview: # Chính sách Trả hàng và Hoàn tiền - Quyền và Trách nhiệm của Người Bán  ## 1. QUYỀN CỦA NGƯỜI BÁN  Khi nhận đ...
+
+[KẾT LUẬN A/B TESTING]
+- Khi KHÔNG có filter: Các tài liệu của Người mua (như return-refund-general, return-refund-tracking) có thể chiếm các vị trí top đầu do trùng từ khóa 'thông báo', 'yêu cầu', 'trả hàng'.
+- Khi CÓ filter audience='seller': Hệ thống loại bỏ 100% tài liệu người mua gây nhiễu, tập trung chính xác vào chính sách người bán (return-refund-policy), giúp đưa thông tin '02 ngày lịch' lên vị trí ưu tiên cao nhất.

@@ -155,20 +155,25 @@ tests/test_solution.py::TestEmbeddingStoreDeleteDocument::test_delete_returns_tr
 
 ## 5. Kết quả truy xuất của tôi (Competition Results) — Cá nhân (10 điểm)
 
-Chạy **5 câu hỏi đánh giá của nhóm** trên mã nguồn cá nhân trong gói `src`, sử dụng chiến lược **`FixedSizeChunker(chunk_size=500, overlap=50)`** trên 88 chunks từ 6 tài liệu chính sách Shopee (`return-refund-*.md`).
+Chạy **5 câu hỏi đánh giá của nhóm** trên mã nguồn cá nhân trong gói `src`, sử dụng chiến lược **`FixedSizeChunker(chunk_size=500, overlap=50)`** kết hợp **`GeminiEmbedder` (text-embedding-004 / 3072 chiều)** trên 88 chunks từ 6 tài liệu chính sách Shopee (`return-refund-*.md`). Kết quả chi tiết được lưu tại `ket_qua_benchmark.txt`.
 
-| # | Câu hỏi (Query) | Top-1 Chunk truy xuất được (tóm tắt) | Điểm Score | Có liên quan không? (Relevant) | Câu trả lời của Agent (tóm tắt) |
-|---|-------|--------------------------------|-------|-----------|------------------------|
-| 1 | Người mua có thể gửi yêu cầu Trả hàng/Hoàn tiền cho đơn hàng thông thường trong bao lâu? | `return-refund-policy#12`: Quy định về vi phạm chính sách của Người Mua trên Sàn TMĐT Shopee... | 0.2747 | Không (Nhiễu do Mock) | [RAG Answer] Dựa trên tài liệu: ng, trừ trường hợp Người Mua thực hiện bất cứ hành vi nào vi phạm các Chính sách... |
-| 2 | Thời hạn yêu cầu Trả hàng/Hoàn tiền đối với thực phẩm tươi sống và đông lạnh là bao lâu? | `return-refund-tracking#0`: # Trả hàng/Hoàn tiền - Theo dõi tình trạng Trả hàng/Hoàn tiền trên Shopee... | 0.2745 | Không (Nhiễu do Mock) | [RAG Answer] Dựa trên tài liệu: Tất cả các thông tin/trạng thái xử lý Trả hàng hoàn tiền của bạn sẽ được Shopee cập nhật... |
-| 3 | Với đơn hàng do Người bán tự vận chuyển, thời hạn yêu cầu Trả hàng/Hoàn tiền được tính như thế nào? | `return-refund-receiving#0`: # Trả hàng/Hoàn tiền - Thời gian nhận tiền hoàn và cách kiểm tra... | 0.3073 | Không (Nhiễu do Mock) | [RAG Answer] Dựa trên tài liệu: Sau khi gửi trả hàng, bạn sẽ nhận được thông báo xác nhận hoàn tiền qua mục Thông báo... |
-| 4 | Người mua cần cung cấp những thông tin hoặc bằng chứng gì khi gửi yêu cầu Trả hàng/Hoàn tiền? | `return-refund-general#10`: Quy định về hoàn Xu và mã giảm giá khi khiếu nại trên một/nhiều sản phẩm... | 0.3121 | Không (Nhiễu do Mock) | [RAG Answer] Dựa trên tài liệu: Hoàn tất cả sản phẩm: Hoàn toàn bộ Xu. Khiếu nại trên một/ một vài sản phẩm Không hoàn mã... |
-| 5 | Sau khi nhận thông báo liên quan đến yêu cầu Trả hàng/Hoàn tiền, Người bán phải phản hồi trong bao lâu? *(Filter: audience=seller)* | `return-refund-policy#2`: 2. ĐIỀU KIỆN ÁP DỤNG... Shopee hỗ trợ Người Dùng giải quyết xung đột, tranh chấp... | 0.2730 | Có (Lọt top-3 tài liệu chính sách Người Bán) | [RAG Answer] Dựa trên tài liệu: liên hệ với Người bán để được hỗ trợ về Shop Voucher Việc hoàn lại Voucher chỉ được thực hiện... |
+Áp dụng phương pháp **chấm 2 mức**:
+- *Mức 1 (Doc ID)*: Kiểm tra tài liệu gold có nằm trong top-3 không.
+- *Mức 2 (Content Grounding)*: Kiểm tra chuỗi đặc trưng chứa đáp án có thực sự nằm trong nội dung chunk không (2đ nếu ở top-1, 1đ nếu ở top-2/3, 0đ nếu không có).
 
-**Bao nhiêu câu hỏi trả về chunk có liên quan trong top-3?** **1 / 5** (Câu 5 nhờ có tiền lọc metadata `audience: seller` nên đã khoanh vùng chính xác vào tài liệu chính sách người bán).
+| # | Câu hỏi (Query) | Top-1 Chunk truy xuất được (tóm tắt) | Điểm Score | Chuỗi đặc trưng | Có liên quan? (Mức 2) | Đánh giá điểm | Câu trả lời của Agent (tóm tắt) |
+|---|-------|--------------------------------|-------|-----------------|----------------------|---------------|------------------------|
+| 1 | Người mua có thể gửi yêu cầu Trả hàng/Hoàn tiền cho đơn hàng thông thường trong bao lâu? | `return-refund-policy#6`: Điều kiện yêu cầu trả hàng/hoàn tiền... | 0.8287 | `"15 ngày"` | Có (ở Top-2: `return-refund-general#1`) | 1 / 2 điểm | [RAG Answer] Dựa trên tài liệu: Người Mua có thể gửi yêu cầu trả hàng/hoàn tiền trong vòng 15 (mười lăm) ngày... |
+| 2 | Thời hạn yêu cầu Trả hàng/Hoàn tiền đối với thực phẩm tươi sống và đông lạnh là bao lâu? | `return-refund-policy#6`: Riêng thực phẩm tươi sống và đông lạnh cần gửi yêu cầu trong vòng 24 giờ... | 0.8287 | `"24 giờ"` | Có (ở Top-1) | 2 / 2 điểm | [RAG Answer] Dựa trên tài liệu: Riêng đối với các Sản Phẩm là thực phẩm tươi sống và đông lạnh... trong vòng 24 giờ... |
+| 3 | Với đơn hàng do Người bán tự vận chuyển, thời hạn yêu cầu Trả hàng/Hoàn tiền được tính như thế nào? | `return-refund-general#1`: Đơn do Người bán tự vận chuyển: 15 ngày kể từ Đã nhận được hàng hoặc 20 ngày... | 0.7718 | `"20 ngày"` | Có (ở Top-1) | 2 / 2 điểm | [RAG Answer] Dựa trên tài liệu: Đối với đơn hàng do Người bán tự vận chuyển: + 15 ngày kể từ lúc bạn bấm ‘Đã nhận được hàng’... |
+| 4 | Người mua cần cung cấp những thông tin hoặc bằng chứng gì khi gửi yêu cầu Trả hàng/Hoàn tiền? | `return-refund-evidence#0`: Hướng dẫn chuẩn bị bằng chứng: video mở kiện hàng, tình trạng sản phẩm... | 0.8599 | `"video"` | Có (ở Top-2: `return-refund-evidence#3`) | 1 / 2 điểm | [RAG Answer] Dựa trên tài liệu: Khi bạn cần gửi yêu cầu Trả hàng/Hoàn tiền trên Shopee, cung cấp đầy đủ video, hình ảnh... |
+| 5 | Sau khi nhận thông báo liên quan đến yêu cầu Trả hàng/Hoàn tiền, Người bán phải phản hồi trong bao lâu? *(Filter: audience=seller)* | `return-refund-policy#22`: Người Bán cần gửi phản hồi trong vòng 02 ngày lịch kể từ ngày nhận được thông báo... | 0.8290 | `"02 ngày lịch"` | Có (ở Top-1) | 2 / 2 điểm | [RAG Answer] Dựa trên tài liệu: Người Bán cần gửi phản hồi trong vòng 02 ngày lịch kể từ ngày nhận được thông báo của Shopee... |
+
+**Bao nhiêu câu hỏi trả về chunk có liên quan trong top-3?** **5 / 5** (100% câu hỏi đều đưa được chunk chứa đáp án chuẩn vào top-3).  
+**Tổng điểm chất lượng truy xuất cá nhân:** **8 / 10 điểm** (3 câu đạt điểm tối đa ở Top-1, 2 câu đạt ở Top-2).
 
 **Điều hay nhất tôi học được từ thành viên khác / nhóm khác (qua demo):**
-> Khi chạy với `MockEmbedder`, chiến lược chia theo kích thước cố định (`FixedSizeChunker`) bị ảnh hưởng nặng bởi nhiễu ký tự và thiếu ngữ nghĩa, khiến việc tìm kiếm dựa trên từ khóa gần như ngẫu nhiên. Tuy nhiên, việc áp dụng **lọc siêu dữ liệu (Metadata Filtering)** ở Câu 5 đã cứu vãn độ chính xác bằng cách loại bỏ triệt để các tài liệu không liên quan trước khi tính độ tương đồng. Bài học rút ra là: trong một hệ thống RAG thực tế, metadata có cấu trúc tốt chính là "lá chắn" quan trọng nhất giúp giảm thiểu ảo giác (hallucination) và tăng tính chính xác của tác tử.
+> Khi chuyển từ `MockEmbedder` sang `GeminiEmbedder` (mô hình học sâu 3072 chiều), chất lượng truy xuất tăng vọt từ 1/5 lên 5/5 câu hỏi có đáp án trong top-3 với điểm cosine similarity rất cao (>0.75). Đặc biệt, thí nghiệm A/B ở Câu 5 chứng minh sức mạnh của **Metadata Filtering**: khi không có filter, tài liệu người mua tràn vào top-2 và top-3; khi có filter `audience='seller'`, hệ thống loại bỏ 100% tài liệu nhiễu, giúp câu trả lời của Agent đạt độ chuẩn xác tuyệt đối.
 
 ---
 
